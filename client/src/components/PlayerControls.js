@@ -36,7 +36,7 @@ class PlayerControls extends Component {
           step="0.01"
           onChange={this.props.handleTimeChange}
         />
-        {this.props.formatTime(this.props.currentEpisodeDuration)}
+      {this.props.formatTime(this.props.currentEpisodeDuration - this.props.currentTime)}
       </div>
 
         <div className="buttons">

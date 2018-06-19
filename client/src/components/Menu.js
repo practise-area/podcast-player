@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import Player from './Player';
 // import Search from './Search';
 
@@ -29,11 +29,14 @@ class Menu extends Component {
         </div>
 
         <div className="menu-title">
-          Podcast Player
+          <Link to="/">Podcast Player</Link>
         </div>
 
         <div className="nav-login">
-          Log In - Sign Up
+          <Link to="/login">Log In </Link>
+          -
+          <Link to="/register"> Sign Up</Link>
+
         </div>
 
       </div>

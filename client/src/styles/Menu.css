@@ -27,6 +27,11 @@ div {
   align-self: center;
 }
 
+a:hover {
+  color: #dedede;
+  text-decoration: none;
+}
+
 .menu-item {
   align-self: center;
 }

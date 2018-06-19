@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+// import { connect } from 'react-redux';
+// import { loginUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Login extends Component {
@@ -8,6 +12,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
@@ -15,11 +20,19 @@ class Login extends Component {
   }
 
   componentDidMount() {
-
+    // if(this.props.auth.isAuthenticated) {
+    //   this.props.history.push('/dashboard');
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
+    // if (nextProps.auth.isAuthenticated) {
+    //   this.props.history.push('/dashboard')
+    // }
 
+    // if (nextProps.errors) {
+    //   this.setState({ errors: nextProps.errors });
+    // }
   }
 
 
@@ -35,18 +48,21 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     }
-    console.log(userData);
+    // this.props.loginUser(userData);
+    axios.post('/api/users/login', userData)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.response.data));
   }
 
   render() {
     const { errors } = this.state;
     return(
-      <div className="l">
-        <div className="c">
-          <div className="">
-            <div className="">
-              <h1 className="">Log In</h1>
-              <p className="">Sign in to your account</p>
+      <div className="login">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 m-auto">
+              <h1 className="display-4 text-center">Log In</h1>
+              <p className="lead text-center">Sign in to your Podcast Player account</p>
               <form onSubmit={this.onSubmit} >
                 <TextFieldGroup
                   placeholder="Email Address"
@@ -54,6 +70,7 @@ class Login extends Component {
                   type="email"
                   value={this.state.email}
                   onChange={this.onChange}
+                  error={errors.email}
                 />
 
                 <TextFieldGroup
@@ -62,8 +79,9 @@ class Login extends Component {
                   type="password"
                   value={this.state.password}
                   onChange={this.onChange}
+                  error={errors.password}
                 />
-                <input type="submit" className="" />
+                <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
           </div>
@@ -73,7 +91,18 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
 
 
+// export default connect(mapStateToProps, { loginUser })(Login);
 
 export default Login;
