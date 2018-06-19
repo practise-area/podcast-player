@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logoutUser } from '../actions/authActions';
+import { clearCurrentLibrary } from '../actions/libraryActions';
+
 // import Player from './Player';
 // import Search from './Search';
 
@@ -21,7 +26,32 @@ class Menu extends Component {
   componentWillUmount() {
   }
 
+  onLogoutClick(e) {
+    e.preventDefault();
+    this.props.clearCurrentLibrary();
+    this.props.logoutUser();
+  }
+
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+
+    const guestLinks = (
+      <div className="nav-login">
+        <Link to="/login">Login </Link>
+        -
+        <Link to="/register"> Sign Up</Link>
+      </div>
+
+    );
+
+    const authLinks = (
+      <div className="nav-login">
+        {user.name} -
+        <a href="#" onClick={this.onLogoutClick.bind(this)}> Logout</a>
+      </div>
+
+    );
+
     return(
       <div className="menu">
         <div className="menu-logo">
@@ -32,12 +62,10 @@ class Menu extends Component {
           <Link to="/">Podcast Player</Link>
         </div>
 
-        <div className="nav-login">
-          <Link to="/login">Log In </Link>
-          -
-          <Link to="/register"> Sign Up</Link>
+          {isAuthenticated ? authLinks : guestLinks }
 
-        </div>
+
+
 
       </div>
 
@@ -46,29 +74,14 @@ class Menu extends Component {
   };
 };
 
+Menu.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+}
 
-export default Menu;
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
 
 
-//
-// <div className="menu">
-//   <div className="menu-title">
-//       Podcast Player
-//   </div>
-//
-//   <div className="player-menu">
-//     <i className="fas fa-headphones menu-item-icon"></i>
-//     <Link to="/player" component={Player}><h2 className="player-menu menu-item">Player</h2></Link>
-//   </div>
-//
-//   <div className="search-menu">
-//     <i className="fas fa-search menu-item-icon"></i>
-//     <Link to="/" component={Search}><h2 className="search-menu menu-item">Search</h2></Link>
-//   </div>
-//
-//   <div className="library-menu">
-//     <i className="fas fa-list menu-item-icon"></i>
-//     <h2 className="library-menu menu-item">Library</h2>
-//   </div>
-// </div>
-//
+export default connect(mapStateToProps, { logoutUser, clearCurrentLibrary })(Menu);

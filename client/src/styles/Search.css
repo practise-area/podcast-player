@@ -12,6 +12,11 @@ p {
   clear: left;
 }
 
+/* .search-results:hover {
+  background-color: #dedede;
+  cursor: pointer;
+} */
+
 
 .search-result-title {
   font-size: 1.0rem;
@@ -35,6 +40,7 @@ p {
   font-size: 0.8rem;
   color: orange;
 }
+
 
 a:hover {
 

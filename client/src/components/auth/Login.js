@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import { connect } from 'react-redux';
-// import { loginUser } from '../../actions/authActions';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Login extends Component {
@@ -20,19 +20,19 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    // if(this.props.auth.isAuthenticated) {
-    //   this.props.history.push('/dashboard');
-    // }
+    if(this.props.auth.isAuthenticated) {
+      this.props.history.push('/');
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.auth.isAuthenticated) {
-    //   this.props.history.push('/dashboard')
-    // }
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/')
+    }
 
-    // if (nextProps.errors) {
-    //   this.setState({ errors: nextProps.errors });
-    // }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
 
@@ -48,14 +48,12 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     }
-    // this.props.loginUser(userData);
-    axios.post('/api/users/login', userData)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err.response.data));
+    this.props.loginUser(userData);
   }
 
   render() {
     const { errors } = this.state;
+
     return(
       <div className="login">
         <div className="container">
@@ -103,6 +101,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-// export default connect(mapStateToProps, { loginUser })(Login);
-
-export default Login;
+export default connect(mapStateToProps, { loginUser })(Login);

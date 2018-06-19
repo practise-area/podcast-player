@@ -22,7 +22,7 @@ class Search extends Component {
       console.log(data);
       let podcasts = data.results.map((podcast) => {
         return(
-          <div key={podcast.collectionId}>
+          <div key={podcast.collectionId} onClick={ () => this.props.fetchDataFromRssFeed(podcast.feedUrl)}>
             <li className="search-results">
               <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(podcast.feedUrl)} src={podcast.artworkUrl100} />
               <p className="search-result-title">{podcast.collectionName}</p>
