@@ -1,0 +1,76 @@
+.feed-item {
+  text-align: center;
+  border-top: 1px solid #cccccc;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  height: 4em;
+}
+
+li {
+  list-style-type: none;
+}
+
+li:hover {
+  /* background-color: #d7d7d7; */
+}
+
+.feed-item-list {
+  align-self: center;
+  padding: 0 10px;
+
+}
+
+.feed-item-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed-item-title {
+  font-family: 'Lato', sans-serif;
+  color: #404040;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.feed-item-title a {
+
+}
+
+.feed-item-title a:hover {
+  color: #777777;
+}
+
+.feed-item-url {
+  font-size: 0.7rem;
+}
+
+.feed-item-description {
+  font-size: 0.6rem;
+}
+
+.feed-item-info {
+  font-size: 0.7rem;
+}
+
+.item-play {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.item-pause {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.item-play:hover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  grid-column-start: 1;
+  background-color: #d7d7d7;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');

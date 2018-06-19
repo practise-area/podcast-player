@@ -1,0 +1,49 @@
+p {
+  margin: 5px;
+
+}
+
+.search-results-container {
+  margin: 0 10px 0 0;
+
+}
+
+.search-results {
+  clear: left;
+}
+
+
+.search-result-title {
+  font-size: 1.0rem;
+  font-weight: bold;
+}
+
+
+.search-result-author {
+  font-size: 0.7rem;
+  color: #a7a7a7;
+}
+
+.search-result-image {
+  padding-right: 10px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.add-to-library {
+  padding-top: 1%;
+  font-size: 0.8rem;
+  color: orange;
+}
+
+a:hover {
+
+}
+
+img {
+  float: left;
+}
+
+img:hover {
+  opacity: 0.5;
+}
