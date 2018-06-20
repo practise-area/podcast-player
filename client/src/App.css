@@ -41,6 +41,13 @@
   font-size: large;
 }
 
+.loading-spinner img {
+  height: 25%;
+  width: 25%;
+  display: block;
+  margin: 0 auto;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

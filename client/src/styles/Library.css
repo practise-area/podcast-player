@@ -1,0 +1,11 @@
+.delete-from-library {
+  padding-top: 1%;
+  font-size: 0.8rem;
+  color: #f30017;
+  cursor: pointer;
+}
+
+.delete-from-library:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}

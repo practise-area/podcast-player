@@ -3,6 +3,8 @@ import FeedItem from './FeedItem';
 import PlayerControls from './PlayerControls';
 import Search from './Search';
 import Library from './Library';
+import Spinner from './common/Spinner';
+
 
 
 import '../styles/Player.css';
@@ -20,9 +22,9 @@ class Player extends Component {
       volume: 80,
       currentTime: 0,
       currentEpisodeDuration: 0,
-      currentEpisodeDescription: ''
+      currentEpisodeDescription: '',
     };
-    this.fetchDataFromRssFeed('http://rss.acast.com/eggchasers');
+    // this.fetchDataFromRssFeed('');
     this.audioElement = document.createElement('audio');
   }
 
@@ -95,7 +97,7 @@ class Player extends Component {
   }
 
   fetchDataFromRssFeed(url) {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.onreadystatechange = () => {
       if (request.readyState === 4 && request.status === 200) {
         var myObj = JSON.parse(request.responseText);
@@ -151,6 +153,38 @@ class Player extends Component {
               />
     });
 
+    let emptyPlayer = ''
+    if(!this.state.currentEpisode) {
+      emptyPlayer = (
+        <div className="player-top-section">
+
+          <div className="empty-player">
+            <i class="fas fa-question question-mark"></i>
+            <div className="podcast-title empty-player">What do you want to listen to today?</div>
+            <small>(Use the search bar to get started...)</small>
+          </div>
+
+        </div>
+      );
+    } else {
+      emptyPlayer = (
+        <div className="player-top-section">
+
+          <div className="podcast-info">
+            <div className="podcast-image">
+              <img alt="Podcast Logo" src={this.state.feedData.image} />
+            </div>
+              <div className="podcast-title">{this.state.feedData.title} </div>
+              <div className="podcast-author">{this.state.feedData.author}</div>
+          </div>
+
+          <div className="current-episode">
+            <div className="current-episode-description">{this.state.currentEpisodeDescription}</div>
+          </div>
+        </div>
+      );
+    }
+
     return(
       <div className="main">
 
@@ -159,19 +193,8 @@ class Player extends Component {
         </section>
 
         <section className="player">
-          <div className="player-top-section">
-            <div className="podcast-info">
-              <div className="podcast-image">
-                <img alt="Podcast Logo" src={this.state.feedData.image} />
-              </div>
-                <div className="podcast-title">{this.state.feedData.title} </div>
-                <div className="podcast-author">{this.state.feedData.author}</div>
-            </div>
+          {emptyPlayer}
 
-            <div className="current-episode">
-              <div className="current-episode-description">{this.state.currentEpisodeDescription}</div>
-            </div>
-          </div>
 
           <div className="player-controls-section">
             <PlayerControls
@@ -187,15 +210,17 @@ class Player extends Component {
               handleSkipBackwards15Seconds={ (e) => this.handleSkipBackwards15Seconds(e) }
               formatTime={ (time) => this.formatTime(time) }
             />
-        </div>
+          </div>
 
-        <div className="feed-section">
+          <div className="feed-section">
             {allEpisodes}
           </div>
         </section>
 
         <section className="library-section">
-          <Library />
+          <Library
+            fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }
+          />
         </section>
 
 

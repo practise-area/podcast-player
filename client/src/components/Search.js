@@ -1,5 +1,12 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { addToLibrary, getCurrentLibrary } from '../actions/libraryActions';
+
+
+
+import _ from 'lodash';
 import SearchBar from './SearchBar';
 import '../styles/Search.css';
 
@@ -14,6 +21,18 @@ class Search extends Component {
 
   }
 
+
+  onAddToLibrary(e, title, author, feed, image) {
+    // e.preventDefault();
+    const podcastData = {
+      title: title,
+      author: author,
+      feed: feed,
+      image: image
+    }
+    this.props.addToLibrary(podcastData, this.props.history)
+  }
+
   fetchItunesData(search_term) {
     fetch(`https://itunes.apple.com/search?term=${search_term}&entity=podcast`)
     .then(results => {
@@ -22,12 +41,14 @@ class Search extends Component {
       console.log(data);
       let podcasts = data.results.map((podcast) => {
         return(
-          <div key={podcast.collectionId} onClick={ () => this.props.fetchDataFromRssFeed(podcast.feedUrl)}>
+          <div key={podcast.collectionId}>
             <li className="search-results">
               <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(podcast.feedUrl)} src={podcast.artworkUrl100} />
               <p className="search-result-title">{podcast.collectionName}</p>
               <p className="search-result-author">{podcast.artistName}</p>
-              <p className="add-to-library"><i class="fas fa-plus-circle"></i> Add to Library</p>
+              <p className="add-to-library"
+                onClick={ (e) => this.onAddToLibrary(e, podcast.collectionName, podcast.artistName, podcast.feedUrl, podcast.artworkUrl100)}>
+                <i className="fas fa-plus-circle"></i> Add to Library</p>
             </li>
           </div>
         )
@@ -49,7 +70,15 @@ class Search extends Component {
   }
 }
 
-export default Search;
 
-// <input type="search" onChange={ (e) => this.handleSearchInput(e.target.value) }/>
-// <button type="submit" onSubmit={ () => this.fetchItunesData(this.state.searchTerm)}></button>
+Search.propTypes = {
+  library: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  library: state.library,
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { addToLibrary, getCurrentLibrary })(withRouter(Search));

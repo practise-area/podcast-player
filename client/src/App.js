@@ -3,9 +3,11 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
-import { clearCurrentLibrary } from './actions/libraryActions';
+import { clearCurrentLibrary, getCurrentLibrary } from './actions/libraryActions';
 import { Provider } from 'react-redux';
 import store from './store';
+
+import PrivateRoute from './components/common/PrivateRoute';
 
 
 
@@ -22,12 +24,13 @@ if(localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwt_decode(localStorage.jwtToken);
   store.dispatch(setCurrentUser(decoded));
+  store.dispatch(getCurrentLibrary());
 
   const currentTime = Date.now() / 1000;
   if(decoded.exp < currentTime) {
     store.dispatch(logoutUser());
     store.dispatch(clearCurrentLibrary());
-    window.location.href = '/login';
+    window.location.href = '/';
   }
 }
 

@@ -2,7 +2,7 @@
   padding: 0 10px;
   width: 100%;
   display: grid;
-  grid-template-columns: 30% 40% 30% 1%;
+  grid-template-columns: 28% 40% 30% 1%;
 }
 
 .search-section {
@@ -74,6 +74,17 @@
 
 .player-controls-section {
 
+}
+
+.empty-player {
+  text-align: center;
+  color: #797979;
+  margin-top: 3%;
+}
+
+.question-mark {
+  font-size: 3.0rem;
+  text-align: center;
 }
 
 

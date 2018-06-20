@@ -19,6 +19,22 @@ export const getCurrentLibrary = () => dispatch => {
       );
 }
 
+export const addToLibrary = (podcastData, history) => dispatch => {
+  axios.post('/api/library', podcastData)
+    .then(res =>
+      dispatch({
+        type: GET_LIBRARY,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+}
+
 export const setLibraryLoading = () => {
   return {
     type: LIBRARY_LOADING
@@ -31,3 +47,16 @@ export const clearCurrentLibrary = () => {
     type: CLEAR_CURRENT_LIBRARY
   }
 }
+
+
+//
+// export const addToLibrary = (podcastData, history) => dispatch => {
+//   axios.post('/api/library', podcastData)
+//     .then(res => res.json())
+//     .catch(err =>
+//       dispatch({
+//         type: GET_ERRORS,
+//         payload: err.response.data
+//       })
+//     );
+// }
