@@ -18,12 +18,9 @@ class Search extends Component {
       searchResults: [],
       searchTerm: ''
     };
-
   }
 
-
   onAddToLibrary(e, title, author, feed, image) {
-    // e.preventDefault();
     const podcastData = {
       title: title,
       author: author,
@@ -38,7 +35,6 @@ class Search extends Component {
     .then(results => {
       return results.json();
     }).then(data => {
-      console.log(data);
       let podcasts = data.results.map((podcast) => {
         return(
           <div key={podcast.collectionId}>

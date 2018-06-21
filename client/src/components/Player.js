@@ -159,7 +159,7 @@ class Player extends Component {
         <div className="player-top-section">
 
           <div className="empty-player">
-            <i class="fas fa-question question-mark"></i>
+            <i className="fas fa-question question-mark"></i>
             <div className="podcast-title empty-player">What do you want to listen to today?</div>
             <small>(Use the search bar to get started...)</small>
           </div>

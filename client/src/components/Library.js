@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getCurrentLibrary } from '../actions/libraryActions';
+import { getCurrentLibrary, deletePodcast, clearErrors } from '../actions/libraryActions';
 import Spinner from './common/Spinner';
 
 import '../styles/Library.css';
@@ -13,10 +13,9 @@ class Library extends Component {
     this.state = {
       library: [],
       loggedIn: false,
+      errors: {}
     };
-
-
-
+    this.interval = setInterval(() => this.setState({ errors: {} }), 5000);
   }
 
   componentDidMount() {
@@ -24,11 +23,13 @@ class Library extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
+    if(nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
-  deleteFromLibrary() {
-
+  onDeleteClick(id) {
+    this.props.deletePodcast(id);
   }
 
   render() {
@@ -44,6 +45,9 @@ class Library extends Component {
         authorizedLibrary = (
           <div>
             <h4>My Library</h4>
+            <div className="errors">
+              {this.state.errors ? this.state.errors.podcast : null}
+            </div>
             {
               library.podcasts.map((podcast) => {
                 return(
@@ -53,7 +57,7 @@ class Library extends Component {
                       <p className="search-result-title">{podcast.title}</p>
                       <p className="search-result-author">{podcast.author}</p>
                         <p className="delete-from-library"
-                          onClick={ (e) => this.deleteFromLibrary(e, podcast.collectionName, podcast.artistName, podcast.feedUrl, podcast.artworkUrl100)}>
+                          onClick={this.onDeleteClick.bind(this, podcast._id)}>
                           <i className="far fa-trash-alt"></i> Delete from Library</p>
                     </li>
                   </div>
@@ -90,17 +94,14 @@ Library.propTypes = {
   library: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   getCurrentLibrary: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  deletePodcast: PropTypes.func.isRequired
 }
-
-
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
   library: state.library,
   errors: state.errors
-
 });
 
-
-export default connect(mapStateToProps, { getCurrentLibrary })(Library);
+export default connect(mapStateToProps, { getCurrentLibrary, deletePodcast, clearErrors })(Library);

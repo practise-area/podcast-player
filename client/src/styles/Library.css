@@ -9,3 +9,8 @@
   opacity: 0.7;
   cursor: pointer;
 }
+
+.errors {
+  text-align: center;
+  color: red;
+}

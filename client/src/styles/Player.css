@@ -79,7 +79,7 @@
 .empty-player {
   text-align: center;
   color: #797979;
-  margin-top: 3%;
+  margin-top: 4%;
 }
 
 .question-mark {
@@ -103,6 +103,10 @@
 
   .player {
       grid-column-start: 1;
+  }
+
+  .library-section {
+    grid-column-start: 1;
   }
 
 }

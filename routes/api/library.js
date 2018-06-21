@@ -15,4 +15,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), libraryControl
 // POST api/library/ => Create or Add podcast to current user library
 router.post('/', passport.authenticate('jwt', { session: false }), libraryController.add_to_library);
 
+// DELETE api/library => Remove a SINGLE PODCAST from library
+router.delete('/', passport.authenticate('jwt', { session: false }), libraryController.delete_from_library);
+
 module.exports = router;

@@ -21,9 +21,14 @@ class PlayerControls extends Component {
   render() {
     return(
       <div className="player-controls" id="tester">
-        <div className="currently-playing-title">
-          {this.props.currentEpisode.title}
-        </div>
+        {this.props.currentEpisode ?
+          <div className="currently-playing-title">
+            {this.props.currentEpisode.title}
+          </div> :
+          <div className="currently-playing-title">
+            Waiting...
+          </div>
+        }
 
       <div className="seek-bar">
         {this.props.formatTime(this.props.currentTime)}

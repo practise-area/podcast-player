@@ -53,11 +53,30 @@ exports.add_to_library = (req, res) => {
           feed: req.body.feed,
           image: req.body.image
         }
-        library.podcasts.unshift(newPodcast);
+          const errors = {};
 
-        library.save().then(library => res.json(library));
+          const feedIndex = library.podcasts.map(pod => pod.feed).indexOf(req.body.feed);
+          if(feedIndex >= 0) {
+            errors.podcast = 'Podcast is already in your library.';
+            return res.status(400).json(errors);
+          } else {
+            library.podcasts.unshift(newPodcast);
+            library.save().then(library => res.json(library));
+          }
+
         } else {
           new Library(podcastFields).save().then(library => res.json(library));
         }
       })
-  };
+};
+
+// DELETE api/library => Remove a SINGLE PODCAST from library
+exports.delete_from_library = (req, res) => {
+  Library.findOne({ user: req.user.id }).then(library => {
+    const removeIndex = library.podcasts.map(item => item.id).indexOf(req.query.id);
+
+    library.podcasts.splice(removeIndex, 1);
+    library.save().then(library => res.json(library));
+  })
+  .catch(err => res.status(404).json(err));
+};
