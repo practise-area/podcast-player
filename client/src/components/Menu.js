@@ -6,7 +6,7 @@ import { logoutUser } from '../actions/authActions';
 import { clearCurrentLibrary } from '../actions/libraryActions';
 
 // import Player from './Player';
-// import Search from './Search';
+import Search from './Search';
 
 import '../styles/Menu.css';
 
@@ -54,6 +54,8 @@ class Menu extends Component {
 
     return(
       <div className="menu">
+        <Search />
+
         <div className="menu-logo">
           <i className="fab fa-fort-awesome-alt"></i>
         </div>

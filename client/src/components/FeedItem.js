@@ -6,31 +6,37 @@ class FeedItem extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {};
+    this.state = {
+      hover: false
+    };
   }
+
+  onMouseEnter() {
+    this.setState({ hover: true });
+  }
+
+  onMouseLeave() {
+    this.setState({ hover: false });
+  }
+
+
 
   render() {
     let playOrPause = ''
-    // (this.props.currentEpisode === this.props.podcast)
 
-  if (this.props.currentEpisode) {
-    if (this.props.isPlaying) {
-      playOrPause = <i className="fas fa-pause item-pause"></i>
-    } else {
-      playOrPause = <i className="fas fa-play item-play"></i>
+    if(this.props.currentEpisode && this.props.isPlaying) {
+      playOrPause = <i className="far fa-pause-circle item-pause"></i>
+    } else if (this.state.hover && !this.props.currenEpisode) {
+      playOrPause = <i className="far fa-play-circle item-play"></i>
     }
-  } else {
-    playOrPause = <i className="fas fa-play item-play"></i>
-  }
-
-
 
     return (
-      <div className="feed-item">
-        <div className="feed-item-play" onClick={ () => this.props.handleEpisodeClick(this.props.podcast) }>
+      <div className="feed-item" onMouseEnter={ () => this.onMouseEnter()} onMouseLeave={ () => this.onMouseLeave()}
+        onClick={ () => this.props.handleEpisodeClick(this.props.podcast) }>
+        <div className="feed-item-play" >
           {playOrPause}
         </div>
-        <li className="feed-item-list" onClick={ () => this.props.handleEpisodeClick(this.props.podcast) }>
+        <li className="feed-item-list">
           <div className="feed-item-title" >
             {this.props.podcast.title}
           </div>
@@ -38,7 +44,6 @@ class FeedItem extends Component {
             <small>{this.props.formatTime(this.props.podcast.enclosure.duration)} - - </small>
             <small>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</small>
           </div>
-
         </li>
       </div>
     )

@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { addToLibrary, getCurrentLibrary } from '../actions/libraryActions';
-
-
-
+import { Search as Searcher, Grid, Header } from 'semantic-ui-react';
 import _ from 'lodash';
+
 import SearchBar from './SearchBar';
 import '../styles/Search.css';
 
@@ -15,9 +14,25 @@ class Search extends Component {
     super(props)
 
     this.state = {
-      searchResults: [],
-      searchTerm: ''
+      results: [],
+      value: '',
+      isLoading: false
     };
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.resultRenderer = this.resultRenderer.bind(this);
+  }
+
+  componentWillMount() {
+    this.resetComponent();
+  }
+
+  resetComponent() {
+    this.setState({ isLoading: false, results: [], value: '' })
+  }
+
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value })
+    this.fetchItunesData(value);
   }
 
   onAddToLibrary(e, title, author, feed, image) {
@@ -30,37 +45,59 @@ class Search extends Component {
     this.props.addToLibrary(podcastData, this.props.history)
   }
 
-  fetchItunesData(search_term) {
-    fetch(`https://itunes.apple.com/search?term=${search_term}&entity=podcast`)
-    .then(results => {
-      return results.json();
-    }).then(data => {
-      let podcasts = data.results.map((podcast) => {
-        return(
-          <div key={podcast.collectionId}>
-            <li className="search-results">
-              <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(podcast.feedUrl)} src={podcast.artworkUrl100} />
-              <p className="search-result-title">{podcast.collectionName}</p>
-              <p className="search-result-author">{podcast.artistName}</p>
-              <p className="add-to-library"
-                onClick={ (e) => this.onAddToLibrary(e, podcast.collectionName, podcast.artistName, podcast.feedUrl, podcast.artworkUrl100)}>
-                <i className="fas fa-plus-circle"></i> Add to Library</p>
-            </li>
-          </div>
-        )
+  fetchItunesData(value) {
+    if (!value) { return this.setState({ isLoading: false }) };
+    fetch(`https://itunes.apple.com/search?term=${value}&entity=podcast`)
+      .then(results => {
+        return results.json();
+      }).then(data => {
+        let resultsArray = []
+        data.results.map((podcast) => {
+          let newPodcast = {
+            key: podcast.collectionId,
+            title: podcast.collectionName,
+            author: podcast.artistName,
+            feed: podcast.feedUrl,
+            image: podcast.artworkUrl100
+          }
+          resultsArray.push(newPodcast);
+        })
+        this.setState({ results: [] })
+        this.setState({ results: resultsArray, isLoading: false })
+        console.log(this.state.results);
       })
-      this.setState({ searchResults: podcasts });
-    })
   }
+
+  resultRenderer({ id, title, author, feed, image }) {
+  return(
+    <div className="search-item" id={id} key={id}>
+      <li className="search-results" id={id} key={id}>
+        <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(feed)} src={image} />
+        <p className="search-result-title">{title}</p>
+        <p className="search-result-author">{author}</p>
+        <p className="add-to-library"
+          onClick={ (e) => this.onAddToLibrary(e, title, author, feed, image)}>
+          <i className="fas fa-plus-circle"></i> Add to Library</p>
+      </li>
+    </div>
+  )
+}
 
 
   render() {
+    const { isLoading, value, results } = this.state;
+
     const fetchItunesData = _.debounce((search_term) => { this.fetchItunesData(search_term) }, 350);
 
     return(
       <div className="search-results-container">
-        <SearchBar onSearchTermChange={fetchItunesData} />
-        {this.state.searchResults}
+        <Searcher
+          loading={isLoading}
+          resultRenderer={this.resultRenderer}
+          onSearchChange={_.debounce(this.handleSearchChange, 400, { leading: true })}
+          results={results}
+          value={value}
+        />
       </div>
     );
   }

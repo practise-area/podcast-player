@@ -10,6 +10,7 @@ p {
 
 .search-results {
   clear: left;
+  height: 100px;
 }
 
 /* .search-results:hover {

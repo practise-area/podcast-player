@@ -14,29 +14,16 @@ const User = require('../../models/User');
 // Load controllers
 const userController = require('../../controllers/userController');
 
-
-// @route     GET api/users/test
-// @desc      Users test route
-// @ access   Public
+// GET api/users/test => Users test route
 router.get('/test', userController.user_test);
 
-
-// @route     POST api/users/register
-// @desc      Register new users
-// @ access   Public
+// POST api/users/register => Register new users
 router.post('/register', userController.user_register);
 
-
-
-
-// @route     POST api/users/login
-// @desc      Login user (returning token)
-// @ access   Public
+// POST api/users/login => Login user (returning token)
 router.post('/login', userController.user_login);
 
-// @route     POST api/users/current
-// @desc      Return current user
-// @ access   Private
+// POST api/users/current => Return current user
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
     id: req.user.id,
@@ -45,15 +32,5 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
   });
 
 })
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
