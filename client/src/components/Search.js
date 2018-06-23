@@ -20,6 +20,7 @@ class Search extends Component {
     };
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.resultRenderer = this.resultRenderer.bind(this);
+    this.handleResultSelect = this.handleResultSelect.bind(this);
   }
 
   componentWillMount() {
@@ -33,6 +34,11 @@ class Search extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
     this.fetchItunesData(value);
+  }
+
+  handleResultSelect(e, data) {
+    e.preventDefault();
+    this.props.fetchDataFromRssFeed(data.result.feed);
   }
 
   onAddToLibrary(e, title, author, feed, image) {
@@ -100,7 +106,7 @@ class Search extends Component {
           onSearchChange={_.debounce(this.handleSearchChange, 400, { leading: true })}
           results={results}
           value={value}
-          onResultSelect={(feed) => this.props.fetchDataFromRssFeed(feed)}
+          onResultSelect={this.handleResultSelect}
         />
       </div>
     );

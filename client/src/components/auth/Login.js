@@ -69,7 +69,6 @@ class Login extends Component {
         <p>{errors.password2}</p>
       </Message>
     } else {
-      console.log('nope');
       errorMessage = '';
     }
 

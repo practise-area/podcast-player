@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentLibrary, deletePodcast, clearErrors } from '../actions/libraryActions';
 import Spinner from './common/Spinner';
-import DeleteFromLibrary from './DeleteFromLibrary';
+import isEmpty from '../utils/is-empty';
 
 import '../styles/Library.css';
 import { Dropdown, Button } from 'semantic-ui-react';
@@ -20,11 +20,14 @@ class Library extends Component {
       selectedPodcastFeed: ''
     };
     this.onChange = this.onChange.bind(this);
-    this.interval = setInterval(() => this.setState({ errors: {} }), 5000);
+    // this.interval = setInterval(() => this.setState({ errors: {} }), 5000);
   }
 
   componentDidMount() {
-    this.props.getCurrentLibrary();
+    if (this.props.auth.isAuthenticated) {
+      console.log('isauthed')
+      this.props.getCurrentLibrary();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,9 +55,18 @@ class Library extends Component {
 
     let authorizedLibrary;
 
-    if (library === null || loading) {
+    if (library === null) {
       authorizedLibrary = <Spinner />
     } else {
+      if (isEmpty(library)) {
+        authorizedLibrary = (
+          <div>
+            <Dropdown placeholder='Select one of your favorites...' fluid search selection onChange={this.onChange} />
+
+
+          </div>
+        )
+      } else {
 
       let newArray = []
       let forValues = library.podcasts.map((pod) => {
@@ -71,39 +83,22 @@ class Library extends Component {
         authorizedLibrary = (
           <div>
             <Dropdown placeholder='Select one of your favorites...' fluid search selection options={newArray} onChange={this.onChange} />
-
-            <div className="errors">
-              {this.state.errors ? this.state.errors.podcast : null}
-            </div>
           </div>
         )
-      } else {
-        authorizedLibrary = (
-          <div>
-            Thanks for signing up! Use the search bar to search for your favorite podcasts, and select 'Add To Library' to see them pop up right here!
-          </div>
-        );
       }
     }
-
-    let guestLibrary = (
-      <div className="sign-up">
-        Sign up for an account today to save all your favorite podcasts right here.
-      </div>
-
-    );
-
-
+  }
     return(
       <div className="library-container">
         <div className="library">
-          {this.props.auth.isAuthenticated ? authorizedLibrary : guestLibrary}
+          {this.props.auth.isAuthenticated ? authorizedLibrary : null}
+          <div className="errors">
+            {this.state.errors ? this.state.errors.podcast : null}
+          </div>
         </div>
           {this.state.selectedPodcastFeed ?
             <div className="delete-button">
-              <DeleteFromLibrary
-                selectedPodcastFeed={this.state.selectedPodcastFeed}
-              />
+                <Button color="orange" onClick={(e) => this.onDeleteClick(e, this.state.selectedPodcastFeed)}>Unsubscribe</Button>
             </div>
            : null
           }

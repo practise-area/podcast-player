@@ -33,15 +33,12 @@ li {
   font-size: 0.9rem;
   text-decoration: none;
   align-self: center;
-
-
 }
 
 .feed-item-info {
   grid-column-start: 3;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   align-self: center;
-  font-weight: bold;
 }
 
 .item-play {

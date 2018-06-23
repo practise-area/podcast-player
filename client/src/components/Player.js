@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
+import { Button, Pagination } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+
+
 import FeedItem from './FeedItem';
 import PlayerControls from './PlayerControls';
 import Search from './Search';
 import Library from './Library';
+import Landing from './Landing';
+import WelcomeBack from './WelcomeBack';
 import Spinner from './common/Spinner';
-import { Button } from 'semantic-ui-react';
 
 
 import '../styles/Player.css';
@@ -117,7 +124,7 @@ class Player extends Component {
     // https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.gimletmedia.com%2Fthehabitat
     // https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.acast.com%2Feggchasers
     // https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.soundcloud.com%2Fusers%2Fsoundcloud%3Ausers%3A109532020%2Fsounds.rss
-    request.open("GET", `https://api.rss2json.com/v1/api.json?rss_url=${url}`, true);
+    request.open("GET", `https://api.rss2json.com/v1/api.json?rss_url=${url}&api_key=99fdcyubqq2vrfghrwogpdxwef3jjgcys7abreec&count=999`, true);
     request.send();
   }
 
@@ -148,7 +155,9 @@ class Player extends Component {
   }
 
   render() {
-    const { showLibrary } = this.state
+    const { showLibrary } = this.state;
+    const { user } = this.props.auth;
+    const { isAuthenticated } = this.props.auth;
 
     const allEpisodes = this.state.allEpisodes.map((podcast) => {
       return <FeedItem
@@ -189,11 +198,32 @@ class Player extends Component {
       );
     }
 
+    let WelcomeBackOrLanding = ''
+    if (!this.state.currentEpisode && !isAuthenticated) {
+      WelcomeBackOrLanding = (
+          <Landing />
+      );
+    } else if (!this.state.currentEpisode && isAuthenticated) {
+      WelcomeBackOrLanding = (
+          <WelcomeBack />
+      );
+    }
+
+
     return(
       <div className="main">
 
         <section className="search-section">
           <Search fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }/>
+        </section>
+
+        <section className="library-section">
+          {
+            this.props.auth.isAuthenticated ?
+            <Library
+              fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }
+            /> : null
+          }
         </section>
 
         <div className="player-container">
@@ -230,18 +260,29 @@ class Player extends Component {
           </section>
         </div>
 
-        <section className="library-section">
-          {
-            this.state.showLibrary ?
-            <Library
-              fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }
-            /> : null
-          }
-        </section>
+        { !this.state.currentEpisode ?
+        <div className="landing-container">
+          {WelcomeBackOrLanding}
+        </div> : null
+        }
+
+
+
       </div>
     );
   };
 };
 
+Player.propTypes = {
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+}
 
-export default Player;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+
+
+export default connect(mapStateToProps, {})(Player);

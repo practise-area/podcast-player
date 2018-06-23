@@ -39,11 +39,35 @@
 }
 
 
-
-@media only screen and (min-width: 992px) {
+@media screen and (max-width: 9000px) {
   .ui.search.dropdown .menu {
-    max-height: 40em;
+    max-height: 30em;
+  }
+}
+
+
+@media screen and (max-width: 850px) {
+  .ui.search.dropdown .menu {
+    max-height: 30em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ui.search.dropdown .menu {
+    max-height: 25em;
+  }
+}
+
+@media screen and (max-width: 850px) {
+
+  .delete-button {
+    display: inline;
+    text-align: center;
   }
 
-
+  .library {
+    display: inline;
+    width: 90%;
+    margin: 0 auto;
+  }
 }
