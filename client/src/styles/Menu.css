@@ -20,7 +20,9 @@ div {
   text-align: left;
   align-self: center;
   grid-column-start: 2;
-  font-size: 3.0rem;
+  font-size: 3.5rem;
+  height: 50px;
+  width: 50px;
 }
 
 .nav-login {
@@ -64,4 +66,4 @@ a:hover {
 }
 
 
-@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
+@import url('https://fonts.googleapis.com/css?family=Lato');

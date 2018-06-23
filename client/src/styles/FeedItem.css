@@ -1,8 +1,8 @@
 .feed-item {
-  text-align: center;
+  /* text-align: center; */
   border-top: 1px solid #cccccc;
   display: grid;
-  grid-template-columns: 15% 55% 30%;
+  grid-template-columns: 15% 65% 20%;
   height: 3em;
 }
 
@@ -16,7 +16,6 @@ li {
 }
 
 .feed-item-list {
-  /* grid-column-start: 3; */
   align-self: center;
   padding: 0 10px;
 }
@@ -33,13 +32,16 @@ li {
   color: #404040;
   font-size: 0.9rem;
   text-decoration: none;
+  align-self: center;
+
 
 }
 
 .feed-item-info {
-  position:absolute;
-  font-size: 0.7rem;
   grid-column-start: 3;
+  font-size: 0.7rem;
+  align-self: center;
+  font-weight: bold;
 }
 
 .item-play {

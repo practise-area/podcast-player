@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
+import { Input, Form, Button, Message } from 'semantic-ui-react';
+
+import '../../styles/Login.css';
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -53,36 +57,55 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
 
+    let errorMessage = ''
+
+    if (Object.keys(errors).length > 0) {
+      errorMessage =
+      <Message warning>
+        <Message.Header>Whoops! We found a problem or two...</Message.Header>
+        <p>{errors.name}</p>
+        <p>{errors.email}</p>
+        <p>{errors.password}</p>
+        <p>{errors.password2}</p>
+      </Message>
+    } else {
+      console.log('nope');
+      errorMessage = '';
+    }
+
     return(
       <div className="login">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Log In</h1>
-              <p className="lead text-center">Sign in to your Podcast Player account</p>
-              <form onSubmit={this.onSubmit} >
-                <TextFieldGroup
-                  placeholder="Email Address"
-                  name="email"
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                />
-
-                <TextFieldGroup
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                  error={errors.password}
-                />
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
-          </div>
+        <div className="login-header">
+          <h1>Login</h1>
+          <h4>Sign into your PodCast.le account</h4>
         </div>
+
+        {errorMessage}
+
+        <Form onSubmit={this.onSubmit}>
+          <Form.Field>
+            <input
+              name="email"
+              type="email"
+              placeholder='Email Address'
+              value={this.state.email}
+              onChange={this.onChange}
+              error={errors.email}
+            />
+          </Form.Field>
+          <Form.Field>
+            <input
+              name="password"
+              type="password"
+              placeholder='Password'
+              value={this.state.password}
+              onChange={this.onChange}
+              error={errors.password}
+            />
+          </Form.Field>
+
+          <Button className="submit-button" color="olive">Submit</Button>
+        </Form>
       </div>
     );
   }

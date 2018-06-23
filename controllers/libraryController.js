@@ -73,7 +73,7 @@ exports.add_to_library = (req, res) => {
 // DELETE api/library => Remove a SINGLE PODCAST from library
 exports.delete_from_library = (req, res) => {
   Library.findOne({ user: req.user.id }).then(library => {
-    const removeIndex = library.podcasts.map(item => item.id).indexOf(req.query.id);
+    const removeIndex = library.podcasts.map(item => item.feed).indexOf(req.query.feed);
 
     library.podcasts.splice(removeIndex, 1);
     library.save().then(library => res.json(library));

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { addToLibrary, getCurrentLibrary } from '../actions/libraryActions';
-import { Search as Searcher, Grid, Header } from 'semantic-ui-react';
+import { Search as Searcher, Grid, Header, Button } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import SearchBar from './SearchBar';
@@ -64,7 +64,6 @@ class Search extends Component {
         })
         this.setState({ results: [] })
         this.setState({ results: resultsArray, isLoading: false })
-        console.log(this.state.results);
       })
   }
 
@@ -75,9 +74,13 @@ class Search extends Component {
         <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(feed)} src={image} />
         <p className="search-result-title">{title}</p>
         <p className="search-result-author">{author}</p>
-        <p className="add-to-library"
-          onClick={ (e) => this.onAddToLibrary(e, title, author, feed, image)}>
-          <i className="fas fa-plus-circle"></i> Add to Library</p>
+
+          <Button basic color="green" onClick={ () => this.props.fetchDataFromRssFeed(feed)}>
+            <i className="fas fa-headphones"></i> Listen
+          </Button>
+          <Button basic color="orange" onClick={ (e) => this.onAddToLibrary(e, title, author, feed, image)}>
+            <i className="fas fa-rss"></i> Subscribe
+          </Button>
       </li>
     </div>
   )
@@ -97,6 +100,7 @@ class Search extends Component {
           onSearchChange={_.debounce(this.handleSearchChange, 400, { leading: true })}
           results={results}
           value={value}
+          onResultSelect={(feed) => this.props.fetchDataFromRssFeed(feed)}
         />
       </div>
     );

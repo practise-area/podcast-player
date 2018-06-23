@@ -36,15 +36,13 @@ class FeedItem extends Component {
         <div className="feed-item-play" >
           {playOrPause}
         </div>
-        <li className="feed-item-list">
           <div className="feed-item-title" >
             {this.props.podcast.title}
           </div>
           <div className="feed-item-info">
-            <small>{this.props.formatTime(this.props.podcast.enclosure.duration)} - - </small>
-            <small>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</small>
+            <small><p>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</p></small>
+            <small><p>{this.props.formatTime(this.props.podcast.enclosure.duration)}</p></small>
           </div>
-        </li>
       </div>
     )
   }

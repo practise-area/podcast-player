@@ -11,9 +11,9 @@
   width: 100vw;
 
   background: #01119b;
-  background: -moz-linear-gradient(-45deg, #01119b 0%, #b52a88 100%);
-  background: -webkit-linear-gradient(-45deg, #01119b 0%, #b52a88 100%);
-  background: linear-gradient(135deg, #01119b 0%, #b52a88 100%);
+  background: -moz-linear-gradient(-45deg, #1c2329 0%, #1e3044 100%);
+  background: -webkit-linear-gradient(-45deg, #1c2329 0%, #1e3044 100%);
+  background: linear-gradient(135deg, #1c2329 0%, #1e3044 100%);
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#01119b', endColorstr='#b52a88', GradientType=1);
 }
 

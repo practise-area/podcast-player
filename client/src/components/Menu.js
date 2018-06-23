@@ -54,21 +54,14 @@ class Menu extends Component {
 
     return(
       <div className="menu">
-        <Search />
-
         <div className="menu-logo">
           <i className="fab fa-fort-awesome-alt"></i>
         </div>
 
         <div className="menu-title">
-          <Link to="/">Podcast Player</Link>
+          <Link to="/">PODCAST.LE</Link>
         </div>
-
           {isAuthenticated ? authLinks : guestLinks }
-
-
-
-
       </div>
 
 

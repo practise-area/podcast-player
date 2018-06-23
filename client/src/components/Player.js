@@ -4,7 +4,7 @@ import PlayerControls from './PlayerControls';
 import Search from './Search';
 import Library from './Library';
 import Spinner from './common/Spinner';
-
+import { Button } from 'semantic-ui-react';
 
 
 import '../styles/Player.css';
@@ -23,6 +23,7 @@ class Player extends Component {
       currentTime: 0,
       currentEpisodeDuration: 0,
       currentEpisodeDescription: '',
+      showLibrary: true
     };
     // this.fetchDataFromRssFeed('');
     this.audioElement = document.createElement('audio');
@@ -140,7 +141,15 @@ class Player extends Component {
     }
   }
 
+  showOrHideLibrary(e) {
+    this.setState(prevState => {
+      return { showLibrary: !prevState.showLibrary }
+    });
+  }
+
   render() {
+    const { showLibrary } = this.state
+
     const allEpisodes = this.state.allEpisodes.map((podcast) => {
       return <FeedItem
                 key={podcast.guid}
@@ -169,17 +178,12 @@ class Player extends Component {
     } else {
       emptyPlayer = (
         <div className="player-top-section">
-
           <div className="podcast-info">
             <div className="podcast-image">
               <img alt="Podcast Logo" src={this.state.feedData.image} />
             </div>
               <div className="podcast-title">{this.state.feedData.title} </div>
               <div className="podcast-author">{this.state.feedData.author}</div>
-          </div>
-
-          <div className="current-episode">
-            <div className="current-episode-description">{this.state.currentEpisodeDescription}</div>
           </div>
         </div>
       );
@@ -192,38 +196,48 @@ class Player extends Component {
           <Search fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }/>
         </section>
 
-        <section className="player">
-          {emptyPlayer}
+        <div className="player-container">
+          <section className="player">
+            {emptyPlayer}
 
+            <div className="player-controls-section">
+              <PlayerControls
+                isPlaying={this.state.isPlaying}
+                currentEpisode={this.state.currentEpisode}
+                volume={this.audioElement.volume}
+                handleEpisodeClick={ () => this.handleEpisodeClick(this.state.currentEpisode) }
+                currentTime={this.audioElement.currentTime}
+                currentEpisodeDuration={this.audioElement.duration}
+                handleTimeChange={ (e) => this.handleTimeChange(e) }
+                handleVolumeChange={ (e) => this.handleVolumeChange(e) }
+                handleSkipForward15Seconds={ (e) => this.handleSkipForward15Seconds(e) }
+                handleSkipBackwards15Seconds={ (e) => this.handleSkipBackwards15Seconds(e) }
+                formatTime={ (time) => this.formatTime(time) }
+              />
+            </div>
 
-          <div className="player-controls-section">
-            <PlayerControls
-              isPlaying={this.state.isPlaying}
-              currentEpisode={this.state.currentEpisode}
-              volume={this.audioElement.volume}
-              handleEpisodeClick={ () => this.handleEpisodeClick(this.state.currentEpisode) }
-              currentTime={this.audioElement.currentTime}
-              currentEpisodeDuration={this.audioElement.duration}
-              handleTimeChange={ (e) => this.handleTimeChange(e) }
-              handleVolumeChange={ (e) => this.handleVolumeChange(e) }
-              handleSkipForward15Seconds={ (e) => this.handleSkipForward15Seconds(e) }
-              handleSkipBackwards15Seconds={ (e) => this.handleSkipBackwards15Seconds(e) }
-              formatTime={ (time) => this.formatTime(time) }
-            />
-          </div>
+            <div className="player-bottom-section">
+              <div className="current-episode">
+                <div className="current-episode-description">{this.state.currentEpisodeDescription}</div>
+              </div>
+            </div>
+          </section>
+        </div>
 
-          <div className="feed-section">
+        <div className="feed-container">
+          <section className="feed-section">
             {allEpisodes}
-          </div>
-        </section>
+          </section>
+        </div>
 
         <section className="library-section">
-          <Library
-            fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }
-          />
+          {
+            this.state.showLibrary ?
+            <Library
+              fetchDataFromRssFeed={ (url) => this.fetchDataFromRssFeed(url) }
+            /> : null
+          }
         </section>
-
-
       </div>
     );
   };

@@ -54,8 +54,8 @@ export const clearCurrentLibrary = () => {
   }
 }
 
-export const deletePodcast = (id) => dispatch => {
-  axios.delete(`api/library`, { params: { id: id } })
+export const deletePodcast = (feed) => dispatch => {
+  axios.delete(`api/library`, { params: { feed: feed } })
     .then(res => dispatch({
       type: GET_LIBRARY,
       payload: res.data

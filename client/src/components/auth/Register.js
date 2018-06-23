@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
+
+import { Form, Button, Message } from 'semantic-ui-react';
+import '../../styles/Register.css'
+
 class Register extends Component {
   constructor(props){
     super(props);
@@ -55,51 +59,78 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
 
+    let errorMessage = ''
+
+    if (Object.keys(errors).length > 0) {
+      errorMessage =
+      <Message warning>
+        <Message.Header>Whoops! We found a problem or two...</Message.Header>
+        <p>{errors.name}</p>
+        <p>{errors.email}</p>
+        <p>{errors.password}</p>
+        <p>{errors.password2}</p>
+      </Message>
+    } else {
+      console.log('nope');
+      errorMessage = '';
+    }
+
 
     return(
       <div className="register">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">Create your Podcast Player account</p>
-              <form onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Name"
-                  name="name"
-                  value={this.state.name}
-                  onChange={this.onChange}
-                  error={errors.name}
-                />
-                <TextFieldGroup
-                  placeholder="Email Address"
-                  name="email"
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                />
-                <TextFieldGroup
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                  error={errors.password}
-                />
-                <TextFieldGroup
-                  placeholder="Confirm Password"
-                  name="password2"
-                  type="password"
-                  value={this.state.password2}
-                  onChange={this.onChange}
-                  error={errors.password2}
-                />
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
-          </div>
+        <div className="register-header">
+          <h1>Register</h1>
+          <h4>Register for your PodCast.le account</h4>
         </div>
+
+        {errorMessage}
+
+        <Form error onSubmit={this.onSubmit}>
+          <Form.Field>
+            <input
+              name="name"
+              type="text"
+              placeholder='Username'
+              value={this.state.name}
+              onChange={this.onChange}
+              error={console.log(errors.name)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <input
+              name="email"
+              type="email"
+              placeholder='Email Address'
+              value={this.state.email}
+              onChange={this.onChange}
+              error={errors.email}
+            />
+          </Form.Field>
+          <Form.Field>
+            <input
+              name="password"
+              type="password"
+              placeholder='Password'
+              value={this.state.password}
+              onChange={this.onChange}
+              error={errors.password}
+            />
+          </Form.Field>
+          <Form.Field>
+            <input
+              name="password2"
+              type="password"
+              placeholder='Confirm Password'
+              value={this.state.password2}
+              onChange={this.onChange}
+              error={errors.password2}
+            />
+          </Form.Field>
+
+
+
+          <Button className="submit-button" color="olive">Submit</Button>
+        </Form>
       </div>
 
     );

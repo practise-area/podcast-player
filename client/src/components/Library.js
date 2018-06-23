@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentLibrary, deletePodcast, clearErrors } from '../actions/libraryActions';
 import Spinner from './common/Spinner';
+import DeleteFromLibrary from './DeleteFromLibrary';
 
 import '../styles/Library.css';
+import { Dropdown, Button } from 'semantic-ui-react';
 
 class Library extends Component {
   constructor(props) {
@@ -13,8 +15,11 @@ class Library extends Component {
     this.state = {
       library: [],
       loggedIn: false,
-      errors: {}
+      errors: {},
+      selectedPodcastId: '',
+      selectedPodcastFeed: ''
     };
+    this.onChange = this.onChange.bind(this);
     this.interval = setInterval(() => this.setState({ errors: {} }), 5000);
   }
 
@@ -28,42 +33,48 @@ class Library extends Component {
     }
   }
 
-  onDeleteClick(id) {
+  onDeleteClick(e, id) {
+    e.preventDefault();
     this.props.deletePodcast(id);
+    this.setState({ selectedPodcastFeed: null })
+  }
+
+  onChange(e, data) {
+    e.preventDefault();
+    this.setState({ selectedPodcastFeed: data.value })
+    this.props.fetchDataFromRssFeed(data.value);
   }
 
   render() {
     const { user } = this.props.auth;
     const { library, loading } = this.props.library;
 
+
     let authorizedLibrary;
 
     if (library === null || loading) {
       authorizedLibrary = <Spinner />
     } else {
+
+      let newArray = []
+      let forValues = library.podcasts.map((pod) => {
+        let newPod = {
+          _id: pod._id,
+          image: pod.image,
+          value: pod.feed,
+          text: pod.title
+        }
+        newArray.push(newPod)
+      })
+
       if(Object.keys(library).length > 0) {
         authorizedLibrary = (
           <div>
-            <h4>My Library</h4>
+            <Dropdown placeholder='Select one of your favorites...' fluid search selection options={newArray} onChange={this.onChange} />
+
             <div className="errors">
               {this.state.errors ? this.state.errors.podcast : null}
             </div>
-            {
-              library.podcasts.map((podcast) => {
-                return(
-                  <div key={podcast._id}>
-                    <li className="search-results">
-                      <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(podcast.feed)} src={podcast.image} />
-                      <p className="search-result-title">{podcast.title}</p>
-                      <p className="search-result-author">{podcast.author}</p>
-                        <p className="delete-from-library"
-                          onClick={this.onDeleteClick.bind(this, podcast._id)}>
-                          <i className="far fa-trash-alt"></i> Delete from Library</p>
-                    </li>
-                  </div>
-                )
-              })
-            }
           </div>
         )
       } else {
@@ -82,9 +93,20 @@ class Library extends Component {
 
     );
 
+
     return(
-      <div className="library">
-        {this.props.auth.isAuthenticated ? authorizedLibrary : guestLibrary}
+      <div className="library-container">
+        <div className="library">
+          {this.props.auth.isAuthenticated ? authorizedLibrary : guestLibrary}
+        </div>
+          {this.state.selectedPodcastFeed ?
+            <div className="delete-button">
+              <DeleteFromLibrary
+                selectedPodcastFeed={this.state.selectedPodcastFeed}
+              />
+            </div>
+           : null
+          }
       </div>
     );
   }

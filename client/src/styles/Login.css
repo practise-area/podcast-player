@@ -1,0 +1,13 @@
+.login {
+  width: 400px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.login-header {
+  margin: 10px;
+}
+
+button.submit-button {
+  width: 300px;
+}
