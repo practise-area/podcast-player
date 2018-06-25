@@ -41,7 +41,7 @@ class FeedItem extends Component {
           </div>
           <div className="feed-item-info">
             <small><p>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</p></small>
-            <small><p>{this.props.formatTime(this.props.podcast.enclosure.duration)}</p></small>
+            <small><p>{this.props.formatTime(this.props.podcast.itunes.duration)}</p></small>
           </div>
       </div>
     )
