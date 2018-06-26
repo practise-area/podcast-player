@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
-import TextFieldGroup from '../common/TextFieldGroup';
-
 
 import { Form, Button, Message } from 'semantic-ui-react';
-import '../../styles/Register.css'
+import '../../styles/Register.css';
 
 class Register extends Component {
   constructor(props){
@@ -20,7 +18,6 @@ class Register extends Component {
       password2: '',
       errors: {}
     };
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -40,7 +37,7 @@ class Register extends Component {
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
-    })
+    });
   }
 
   onSubmit(e) {
@@ -50,10 +47,9 @@ class Register extends Component {
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2
-    }
+    };
     this.props.registerUser(newUser, this.props.history);
-
-    }
+  }
 
 
   render() {
@@ -71,12 +67,10 @@ class Register extends Component {
         <p>{errors.password2}</p>
       </Message>
     } else {
-      console.log('nope');
       errorMessage = '';
     }
 
-
-    return(
+    return (
       <div className="register">
         <div className="register-header">
           <h1>Register</h1>
@@ -93,7 +87,7 @@ class Register extends Component {
               placeholder='Username'
               value={this.state.name}
               onChange={this.onChange}
-              error={console.log(errors.name)}
+              error={errors.name}
             />
           </Form.Field>
           <Form.Field>
@@ -127,12 +121,9 @@ class Register extends Component {
             />
           </Form.Field>
 
-
-
           <Button className="submit-button" color="olive">Submit</Button>
         </Form>
       </div>
-
     );
   }
 }

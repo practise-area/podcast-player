@@ -21,7 +21,6 @@
 .buttons {
   display: block;
   align-self: center;
-
 }
 
 .play-pause {
@@ -71,7 +70,6 @@
   grid-row-start: 2;
   grid-column-start: 1;
   align-self: center;
-
 }
 
 
@@ -80,10 +78,7 @@
   grid-row-start: 4;
   grid-column-start: 1;
   align-self: center;
-
 }
-
-
 
 input[type=range].seek-bar {
   margin: 0 10px;
@@ -99,13 +94,13 @@ input[type=range].volume-bar {
 
 input[type=range] {
   height: 8px;
-  /* -webkit-appearance: none; */
   margin: 10px 0;
   width: 60%;
 }
 input[type=range]:focus {
   outline: none;
 }
+
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 6px;
@@ -116,6 +111,7 @@ input[type=range]::-webkit-slider-runnable-track {
   border-radius: 25px;
   border: 1px solid #8A8A8A;
 }
+
 input[type=range]::-webkit-slider-thumb {
   box-shadow: 1px 1px 1px #828282;
   border: 1px solid #8A8A8A;
@@ -127,9 +123,11 @@ input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   margin-top: -5px;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #B6B6B6;
 }
+
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 6px;
@@ -140,6 +138,7 @@ input[type=range]::-moz-range-track {
   border-radius: 25px;
   border: 1px solid #8A8A8A;
 }
+
 input[type=range]::-moz-range-thumb {
   box-shadow: 1px 1px 1px #828282;
   border: 1px solid #8A8A8A;
@@ -149,6 +148,7 @@ input[type=range]::-moz-range-thumb {
   background: #DADADA;
   cursor: pointer;
 }
+
 input[type=range]::-ms-track {
   width: 100%;
   height: 6px;
@@ -158,18 +158,21 @@ input[type=range]::-ms-track {
   border-color: transparent;
   color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
   background: #B6B6B6;
   border: 1px solid #8A8A8A;
   border-radius: 50px;
   box-shadow: 0px 0px 0px #000000;
 }
+
 input[type=range]::-ms-fill-upper {
   background: #B6B6B6;
   border: 1px solid #8A8A8A;
   border-radius: 50px;
   box-shadow: 0px 0px 0px #000000;
 }
+
 input[type=range]::-ms-thumb {
   margin-top: 1px;
   box-shadow: 1px 1px 1px #828282;
@@ -180,9 +183,11 @@ input[type=range]::-ms-thumb {
   background: #DADADA;
   cursor: pointer;
 }
+
 input[type=range]:focus::-ms-fill-lower {
   background: #B6B6B6;
 }
+
 input[type=range]:focus::-ms-fill-upper {
   background: #B6B6B6;
 }

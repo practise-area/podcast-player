@@ -10,8 +10,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errors: {}
-      }
+      };
     default:
       return state;
   }
-}
+};

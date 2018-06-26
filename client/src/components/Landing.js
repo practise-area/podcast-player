@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 
-
 import '../styles/Landing.css';
 
 class Landing extends Component {
-
   render() {
     return (
       <div>
@@ -22,18 +20,13 @@ class Landing extends Component {
           fingertips.
         </h4>
 
-
         <Link to="/register"><Button size='big' color="orange">Sign up for PodCast.le</Button></Link>
 
         <h4>Already have an account? Awesome, welcome back.</h4>
         <Link to="/login"><Button size='large' color="olive">Login</Button></Link>
-
-
-
       </div>
     );
   }
-
 }
 
 export default Landing;

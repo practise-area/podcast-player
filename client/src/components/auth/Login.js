@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
-import TextFieldGroup from '../common/TextFieldGroup';
 
-import { Input, Form, Button, Message } from 'semantic-ui-react';
+import { Form, Button, Message } from 'semantic-ui-react';
 
 import '../../styles/Login.css';
 
@@ -17,7 +16,6 @@ class Login extends Component {
       password: '',
       errors: {}
     };
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -30,7 +28,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/')
+      this.props.history.push('/');
     }
 
     if (nextProps.errors) {
@@ -42,7 +40,7 @@ class Login extends Component {
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
-    })
+    });
   }
 
   onSubmit(e) {
@@ -50,7 +48,7 @@ class Login extends Component {
     const userData = {
       email: this.state.email,
       password: this.state.password,
-    }
+    };
     this.props.loginUser(userData);
   }
 
@@ -72,7 +70,7 @@ class Login extends Component {
       errorMessage = '';
     }
 
-    return(
+    return (
       <div className="login">
         <div className="login-header">
           <h1>Login</h1>
@@ -120,6 +118,5 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors
 });
-
 
 export default connect(mapStateToProps, { loginUser })(Login);

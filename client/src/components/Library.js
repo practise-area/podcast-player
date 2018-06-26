@@ -10,7 +10,7 @@ import { Dropdown, Button } from 'semantic-ui-react';
 
 class Library extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       library: [],
@@ -20,12 +20,10 @@ class Library extends Component {
       selectedPodcastFeed: ''
     };
     this.onChange = this.onChange.bind(this);
-    // this.interval = setInterval(() => this.setState({ errors: {} }), 5000);
   }
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      console.log('isauthed')
       this.props.getCurrentLibrary();
     }
   }
@@ -39,19 +37,17 @@ class Library extends Component {
   onDeleteClick(e, id) {
     e.preventDefault();
     this.props.deletePodcast(id);
-    this.setState({ selectedPodcastFeed: null })
+    this.setState({ selectedPodcastFeed: null });
   }
 
   onChange(e, data) {
     e.preventDefault();
-    this.setState({ selectedPodcastFeed: data.value })
+    this.setState({ selectedPodcastFeed: data.value });
     this.props.fetchDataFromRssFeed(data.value);
   }
 
   render() {
-    const { user } = this.props.auth;
-    const { library, loading } = this.props.library;
-
+    const { library } = this.props.library;
 
     let authorizedLibrary;
 
@@ -61,34 +57,35 @@ class Library extends Component {
       if (isEmpty(library)) {
         authorizedLibrary = (
           <div>
-            <Dropdown placeholder='Select one of your favorites...' fluid search selection onChange={this.onChange} />
-
-
+            <Dropdown placeholder='Select one of your favorites...' fluid search selection options={[]} onChange={this.onChange} />
           </div>
         )
       } else {
 
-      let newArray = []
-      let forValues = library.podcasts.map((pod) => {
-        let newPod = {
+      // Semantic UI Drop down only accepts keys as 'value', 'image' and 'text', so this takes existing
+      // keys and re-maps them to fit those values
+      let arrayToChangeKeys = [];
+      library.podcasts.forEach((pod) => {
+        let newPodcastKeys = {
           _id: pod._id,
           image: pod.image,
           value: pod.feed,
           text: pod.title
-        }
-        newArray.push(newPod)
-      })
+        };
+        arrayToChangeKeys.push(newPodcastKeys);
+      });
 
       if(Object.keys(library).length > 0) {
         authorizedLibrary = (
           <div>
-            <Dropdown placeholder='Select one of your favorites...' fluid search selection options={newArray} onChange={this.onChange} />
+            <Dropdown placeholder='Select one of your favorites...' fluid search selection options={arrayToChangeKeys} onChange={this.onChange} />
           </div>
-        )
+        );
       }
     }
   }
-    return(
+
+    return (
       <div className="library-container">
         <div className="library">
           {this.props.auth.isAuthenticated ? authorizedLibrary : null}

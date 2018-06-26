@@ -5,27 +5,9 @@ import { Link } from 'react-router-dom';
 import { logoutUser } from '../actions/authActions';
 import { clearCurrentLibrary } from '../actions/libraryActions';
 
-// import Player from './Player';
-import Search from './Search';
-
 import '../styles/Menu.css';
 
 class Menu extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-
-    };
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillUmount() {
-  }
-
   onLogoutClick(e) {
     e.preventDefault();
     this.props.clearCurrentLibrary();
@@ -41,33 +23,29 @@ class Menu extends Component {
         -
         <Link to="/register"> Sign Up</Link>
       </div>
-
     );
 
     const authLinks = (
       <div className="nav-login">
         {user.name} -
-        <a href="#" onClick={this.onLogoutClick.bind(this)}> Logout</a>
+        <a href="" onClick={this.onLogoutClick.bind(this)}> Logout</a>
       </div>
-
     );
 
-    return(
+    return (
       <div className="menu">
         <div className="menu-logo">
-          <i className="fab fa-fort-awesome-alt"></i>
+          <Link to="/"><i className="fab fa-fort-awesome-alt"></i></Link>
         </div>
 
         <div className="menu-title">
           <Link to="/">PODCAST.LE</Link>
         </div>
-          {isAuthenticated ? authLinks : guestLinks }
+          {isAuthenticated ? authLinks : guestLinks}
       </div>
-
-
     );
-  };
-};
+  }
+}
 
 Menu.propTypes = {
   logoutUser: PropTypes.func.isRequired,

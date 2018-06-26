@@ -9,18 +9,16 @@ import Search from './Search';
 import Library from './Library';
 import Landing from './Landing';
 import WelcomeBack from './WelcomeBack';
-
+import Spinner from './common/Spinner';
 
 import '../styles/Player.css';
 
 // Instantiate RSS-Parser to convert RSS feeds into JSON.
-let Parser = require('rss-parser');
-let parser = new Parser();
-
+const RSSParser = require('rss-parser');
 
 class Player extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       feedData: [],
@@ -34,6 +32,8 @@ class Player extends Component {
       currentPage: 1
     };
     this.audioElement = document.createElement('audio');
+    this.rssParser = new RSSParser();
+
   }
 
   play() {
@@ -49,7 +49,7 @@ class Player extends Component {
   }
 
   setEpisode(episode) {
-    this.audioElement.src = episode.enclosure.url
+    this.audioElement.src = episode.enclosure.url;
     this.setState({ currentEpisode: episode });
   }
 
@@ -59,8 +59,8 @@ class Player extends Component {
       this.pause();
     } else {
       if (!isSameEpisode) {
-        this.changeCurrentEpisode(episode)
-        this.setEpisode(episode)
+        this.changeCurrentEpisode(episode);
+        this.setEpisode(episode);
       }
       this.play();
     }
@@ -68,15 +68,15 @@ class Player extends Component {
 
   handleTimeChange(e) {
     const newTime = this.audioElement.duration * e.target.value;
-    this.audioElement.currentTime = newTime
-    this.setState({ currentTime: newTime })
+    this.audioElement.currentTime = newTime;
+    this.setState({ currentTime: newTime });
   }
 
   handleVolumeChange(e) {
     const newVolume = e.target.value;
-    this.audioElement.volume = newVolume
-    this.setState({ volume: newVolume })
-  };
+    this.audioElement.volume = newVolume;
+    this.setState({ volume: newVolume });
+  }
 
   changeCurrentEpisode(episode) {
     this.setState({
@@ -87,47 +87,22 @@ class Player extends Component {
   }
 
   handleSkipForward15Seconds(e) {
-    const newTime = this.audioElement.currentTime + 15
-    this.audioElement.currentTime = newTime
-    this.setState({ currentTime: newTime })
+    const newTime = this.audioElement.currentTime + 15;
+    this.audioElement.currentTime = newTime;
+    this.setState({ currentTime: newTime });
   }
 
   handleSkipBackwards15Seconds(e) {
-    const newTime = this.audioElement.currentTime - 15
-    this.audioElement.currentTime = newTime
-    this.setState({ currentTime: newTime })
+    const newTime = this.audioElement.currentTime - 15;
+    this.audioElement.currentTime = newTime;
+    this.setState({ currentTime: newTime });
   }
 
-  // fetchDataFromRssFeed(url) {
-  //   let request = new XMLHttpRequest();
-  //   request.onreadystatechange = () => {
-  //     if (request.readyState === 4 && request.status === 200) {
-  //       var myObj = JSON.parse(request.responseText);
-  //       console.log(myObj);
-  //         this.setState({
-  //           feedData: myObj.feed,
-  //           allEpisodes: myObj.items,
-  //           currentEpisode: myObj.items[0],
-  //           currentEpisodeDuration: myObj.items[0].enclosure.duration,
-  //           currentEpisodeDescription: myObj.items[0].description
-  //         });
-  //         this.audioElement.src = this.state.currentEpisode.enclosure.link;
-  //     }
-  //   }
-  //   // https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.feedburner.com%2Fspipodcast
-  //   // https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.gimletmedia.com%2Fthehabitat
-  //   // https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.acast.com%2Feggchasers
-  //   // https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Ffeeds.soundcloud.com%2Fusers%2Fsoundcloud%3Ausers%3A109532020%2Fsounds.rss
-  //   request.open("GET", `https://api.rss2json.com/v1/api.json?rss_url=${url}&api_key=99fdcyubqq2vrfghrwogpdxwef3jjgcys7abreec&count=999`, true);
-  //   request.send();
-  // }
-
   fetchDataFromRssFeed(url) {
+    this.setState({ isLoading: true });
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     (async () => {
-
-      let feed = await parser.parseURL(proxyurl + url);
-      console.log(feed)
+      let feed = await this.rssParser.parseURL(proxyurl + url);
 
       this.setState({
         feedData: feed,
@@ -135,26 +110,27 @@ class Player extends Component {
         currentEpisode: feed.items[0],
         currentEpisodeDuration: feed.items[0].enclosure.length,
         currentEpisodeDescription: feed.items[0].contentSnippet
-      })
+      });
+      this.setState({ isLoading: false });
       this.audioElement.src = this.state.currentEpisode.enclosure.url;
     })();
   }
 
   formatTime(time) {
-    if (!time) { return }
+    if (!time) { return; }
     // Cleanse time input depending on in seconds or full format
     if (time.length >= 7) {
       if (time[1] === '0') {
-        return time.slice(3)
+        return time.slice(3);
       } else if (time[0] === '0') {
-        return time.slice(1)
+        return time.slice(1);
       }
     } else {
 
       if (isNaN(time)) { return "-:--" }
-      let hours = Math.floor(time / 3600)
-      let minutes = Math.floor((time - hours * 3600) / 60)
-      let seconds = Math.floor(time % 60)
+      let hours = Math.floor(time / 3600);
+      let minutes = Math.floor((time - hours * 3600) / 60);
+      let seconds = Math.floor(time % 60);
 
       if (seconds < 10) {
         seconds = '0' + seconds
@@ -164,9 +140,9 @@ class Player extends Component {
         if (minutes < 10) {
           minutes = '0' + minutes
         }
-        return hours + ':' + minutes + ':' + seconds
+        return hours + ':' + minutes + ':' + seconds;
       } else {
-        return minutes + ':' + seconds
+        return minutes + ':' + seconds;
       }
     }
   }
@@ -187,16 +163,14 @@ class Player extends Component {
     });
 
     let emptyPlayer = ''
-    if(!this.state.currentEpisode) {
+    if (!this.state.currentEpisode) {
       emptyPlayer = (
         <div className="player-top-section">
-
           <div className="empty-player">
             <i className="fas fa-question question-mark"></i>
             <div className="podcast-title empty-player">What do you want to listen to today?</div>
             <small>(Use the search bar to get started...)</small>
           </div>
-
         </div>
       );
     } else {
@@ -213,7 +187,6 @@ class Player extends Component {
       );
     }
 
-
     // Logic to decide whether to show a first time landing page, or a signed in welcome back
     let WelcomeBackOrLanding = ''
     if (!this.state.currentEpisode && !isAuthenticated) {
@@ -226,8 +199,7 @@ class Player extends Component {
       );
     }
 
-
-    return(
+    return (
       <div className="main">
 
         <section className="search-section">
@@ -243,9 +215,16 @@ class Player extends Component {
           }
         </section>
 
+        {/*Whether to show landing or welcome back message*/}
+        { !this.state.currentEpisode ?
+          <div className="landing-container">
+            {WelcomeBackOrLanding}
+          </div> : null
+        }
+
         <div className="player-container">
           <section className="player">
-            {emptyPlayer}
+            { this.state.isLoading ? <Spinner /> : emptyPlayer }
 
             <div className="player-controls-section">
               <PlayerControls
@@ -276,20 +255,10 @@ class Player extends Component {
             {allEpisodes}
           </section>
         </div>
-
-        {/*Whether to show landing or welcome back message*/}
-        { !this.state.currentEpisode ?
-        <div className="landing-container">
-          {WelcomeBackOrLanding}
-        </div> : null
-        }
-
-
-
       </div>
     );
-  };
-};
+  }
+}
 
 Player.propTypes = {
   auth: PropTypes.object.isRequired,
@@ -300,7 +269,5 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors
 });
-
-
 
 export default connect(mapStateToProps, {})(Player);

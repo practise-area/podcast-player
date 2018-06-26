@@ -11,13 +11,13 @@ export const getCurrentLibrary = () => dispatch => {
         payload: res.data
       })
     )
-      .catch(err =>
-        dispatch({
-          type: GET_LIBRARY,
-          payload: {}
-        })
-      );
-}
+    .catch(err =>
+      dispatch({
+        type: GET_LIBRARY,
+        payload: {}
+      })
+    );
+};
 
 export const addToLibrary = (podcastData, history) => dispatch => {
   axios.post('/api/library', podcastData)
@@ -38,21 +38,21 @@ export const addToLibrary = (podcastData, history) => dispatch => {
 export const setLibraryLoading = () => {
   return {
     type: LIBRARY_LOADING
-  }
+  };
 };
 
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
-  }
+  };
 };
 
 
 export const clearCurrentLibrary = () => {
   return {
     type: CLEAR_CURRENT_LIBRARY
-  }
-}
+  };
+};
 
 export const deletePodcast = (feed) => dispatch => {
   axios.delete(`api/library`, { params: { feed: feed } })
@@ -61,9 +61,9 @@ export const deletePodcast = (feed) => dispatch => {
       payload: res.data
     })
   )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      }));
+  .catch(err =>
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    }));
 };

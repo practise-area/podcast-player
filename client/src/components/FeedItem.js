@@ -4,7 +4,7 @@ import '../styles/FeedItem.css';
 
 class FeedItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       hover: false
@@ -19,11 +19,9 @@ class FeedItem extends Component {
     this.setState({ hover: false });
   }
 
-
-
   render() {
+    // Render play or pause button depending on player conditions
     let playOrPause = ''
-
     if(this.props.currentEpisode && this.props.isPlaying) {
       playOrPause = <i className="far fa-pause-circle item-pause"></i>
     } else if (this.state.hover && !this.props.currenEpisode) {
@@ -36,15 +34,15 @@ class FeedItem extends Component {
         <div className="feed-item-play" >
           {playOrPause}
         </div>
-          <div className="feed-item-title" >
-            {this.props.podcast.title}
-          </div>
-          <div className="feed-item-info">
-            <small><p>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</p></small>
-            <small><p>{this.props.formatTime(this.props.podcast.itunes.duration)}</p></small>
-          </div>
+        <div className="feed-item-title" >
+          {this.props.podcast.title}
+        </div>
+        <div className="feed-item-info">
+          <small><p>{moment(this.props.podcast.pubDate).format("MMM Do YY")}</p></small>
+          <small><p>{this.props.formatTime(this.props.podcast.itunes.duration)}</p></small>
+        </div>
       </div>
-    )
+    );
   }
 }
 

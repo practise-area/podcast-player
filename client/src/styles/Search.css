@@ -24,18 +24,12 @@ p {
 }
 
 .search-results-container {
-  margin: 0 10px 0 0;
+  margin: 10px 10px 10px 0;
 }
 
 .search-results {
   clear: left;
 }
-
-/* .search-results:hover {
-  background-color: #dedede;
-  cursor: pointer;
-} */
-
 
 .search-result-title {
   font-size: 1.0rem;

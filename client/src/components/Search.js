@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { addToLibrary, getCurrentLibrary } from '../actions/libraryActions';
-import { Search as Searcher, Grid, Header, Button } from 'semantic-ui-react';
+import { Search as SearchBar, Button } from 'semantic-ui-react';
 import _ from 'lodash';
 
-import SearchBar from './SearchBar';
 import '../styles/Search.css';
 
 class Search extends Component {
@@ -28,11 +27,11 @@ class Search extends Component {
   }
 
   resetComponent() {
-    this.setState({ isLoading: false, results: [], value: '' })
+    this.setState({ isLoading: false, results: [], value: '' });
   }
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
+    this.setState({ isLoading: true, value });
     this.fetchItunesData(value);
   }
 
@@ -48,17 +47,19 @@ class Search extends Component {
       feed: feed,
       image: image
     }
-    this.props.addToLibrary(podcastData, this.props.history)
+    this.props.addToLibrary(podcastData, this.props.history);
   }
 
   fetchItunesData(value) {
-    if (!value) { return this.setState({ isLoading: false }) };
+    if (!value) {
+      return this.setState({ isLoading: false });
+    }
     fetch(`https://itunes.apple.com/search?term=${value}&entity=podcast`)
       .then(results => {
         return results.json();
       }).then(data => {
-        let resultsArray = []
-        data.results.map((podcast) => {
+        let resultsArray = [];
+        data.results.forEach((podcast) => {
           let newPodcast = {
             key: podcast.collectionId,
             title: podcast.collectionName,
@@ -67,40 +68,37 @@ class Search extends Component {
             image: podcast.artworkUrl100
           }
           resultsArray.push(newPodcast);
-        })
-        this.setState({ results: [] })
-        this.setState({ results: resultsArray, isLoading: false })
-      })
+        });
+        this.setState({ results: [] });
+        this.setState({ results: resultsArray, isLoading: false });
+      });
   }
 
   resultRenderer({ id, title, author, feed, image }) {
-  return(
+  return (
     <div className="search-item" id={id} key={id}>
       <li className="search-results" id={id} key={id}>
         <img className="search-result-image" alt="Add to Player" onClick={ () => this.props.fetchDataFromRssFeed(feed)} src={image} />
         <p className="search-result-title">{title}</p>
         <p className="search-result-author">{author}</p>
 
-          <Button basic color="green" onClick={ () => this.props.fetchDataFromRssFeed(feed)}>
-            <i className="fas fa-headphones"></i> Listen
-          </Button>
-          <Button basic color="orange" onClick={ (e) => this.onAddToLibrary(e, title, author, feed, image)}>
-            <i className="fas fa-rss"></i> Subscribe
-          </Button>
+        <Button basic color="green" onClick={ () => this.props.fetchDataFromRssFeed(feed)}>
+          <i className="fas fa-headphones"></i> Listen
+        </Button>
+        <Button basic color="orange" onClick={ (e) => this.onAddToLibrary(e, title, author, feed, image)}>
+          <i className="fas fa-rss"></i> Subscribe
+        </Button>
       </li>
     </div>
-  )
+  );
 }
-
 
   render() {
     const { isLoading, value, results } = this.state;
 
-    const fetchItunesData = _.debounce((search_term) => { this.fetchItunesData(search_term) }, 350);
-
     return(
       <div className="search-results-container">
-        <Searcher
+        <SearchBar
           loading={isLoading}
           resultRenderer={this.resultRenderer}
           onSearchChange={_.debounce(this.handleSearchChange, 400, { leading: true })}
