@@ -54,7 +54,9 @@ class Search extends Component {
     if (!value) {
       return this.setState({ isLoading: false });
     }
-    fetch(`https://itunes.apple.com/search?term=${value}&entity=podcast`)
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    fetch(proxyurl + `https://itunes.apple.com/search?term=${value}&entity=podcast`)
       .then(results => {
         return results.json();
       }).then(data => {
