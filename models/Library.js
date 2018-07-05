@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const LibrarySchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: "users"
   },
   podcasts: [
     {
@@ -28,4 +28,4 @@ const LibrarySchema = new Schema({
   ]
 });
 
-module.exports = Profile = mongoose.model('library', LibrarySchema);
+module.exports = Profile = mongoose.model("library", LibrarySchema);

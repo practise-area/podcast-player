@@ -14,9 +14,6 @@ const User = require('../../models/User');
 // Load controllers
 const userController = require('../../controllers/userController');
 
-// GET api/users/test => Users test route
-router.get('/test', userController.user_test);
-
 // POST api/users/register => Register new users
 router.post('/register', userController.user_register);
 
@@ -30,7 +27,6 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
     name: req.user.name,
     email: req.user.email
   });
-
-})
+});
 
 module.exports = router;
