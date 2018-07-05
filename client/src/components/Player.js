@@ -14,8 +14,7 @@ import Spinner from './common/Spinner';
 import '../styles/Player.css';
 
 // Instantiate RSS-Parser to convert RSS feeds into JSON.
-let Parser = require('rss-parser');
-let parser = new Parser();
+const RSSParser = require('rss-parser');
 
 class Player extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class Player extends Component {
       currentPage: 1
     };
     this.audioElement = document.createElement('audio');
-    // this.rssParser = new RSSParser();
+    this.rssParser = new RSSParser();
 
   }
 
@@ -103,7 +102,7 @@ class Player extends Component {
     this.setState({ isLoading: true });
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     (async () => {
-      let feed = await parser.parseURL(proxyurl + url);
+      let feed = await this.rssParser.parseURL(proxyurl + url);
 
       this.setState({
         feedData: feed,
