@@ -16,7 +16,7 @@
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "rss-parser": "^3.4.1",
+    "rss-parser": "^2.12.1",
     "semantic-ui-react": "^0.81.1"
   },
   "scripts": {
