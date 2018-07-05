@@ -14,7 +14,8 @@ import Spinner from './common/Spinner';
 import '../styles/Player.css';
 
 // Instantiate RSS-Parser to convert RSS feeds into JSON.
-const RSSParser = require('rss-parser');
+import 'rss-parser/dist/rss-parser.min.js';
+// const RSSParser = require('rss-parser');
 
 class Player extends Component {
   constructor(props) {
