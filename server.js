@@ -20,6 +20,7 @@ mongoose
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
+app.use('/', express.static('./client/public'));
 app.use("/api/users", users);
 app.use("/api/library", library);
 
