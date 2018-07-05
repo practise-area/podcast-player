@@ -12,9 +12,11 @@ import WelcomeBack from './WelcomeBack';
 import Spinner from './common/Spinner';
 
 import '../styles/Player.css';
+import fetchFromRssFeed from "../utils/fetchFromRssFeed.js";
+
 
 // Instantiate RSS-Parser to convert RSS feeds into JSON.
-const RSSParser = require('rss-parser');
+// const RSSParser = require('rss-parser');
 
 class Player extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class Player extends Component {
       currentPage: 1
     };
     this.audioElement = document.createElement('audio');
-    this.rssParser = new RSSParser();
+    // this.rssParser = new RSSParser();
 
   }
 
@@ -102,7 +104,7 @@ class Player extends Component {
     this.setState({ isLoading: true });
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     (async () => {
-      let feed = await this.rssParser.parseURL(proxyurl + url);
+      let feed = await fetchFromRssFeed(proxyurl + url);
 
       this.setState({
         feedData: feed,
@@ -178,7 +180,7 @@ class Player extends Component {
         <div className="player-top-section">
           <div className="podcast-info">
             <div className="podcast-image">
-              <img alt="Podcast Logo" src={this.state.feedData.image.url} />
+              <img alt="Podcast Logo" src={this.state.feedData.itunes.image} />
             </div>
               <div className="podcast-title">{this.state.feedData.title} </div>
               <div className="podcast-author">{this.state.feedData.author}</div>
